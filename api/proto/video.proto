@@ -1,0 +1,160 @@
+syntax = "proto3";
+package video;
+
+option go_package = "github.com/Ajay6601/video-platform/pkg/api/video";
+
+service VideoService {
+  // Upload a new video
+  rpc UploadVideo(UploadVideoRequest) returns (UploadVideoResponse);
+  
+  // Get video details
+  rpc GetVideo(GetVideoRequest) returns (Video);
+  
+  // Stream video content
+  rpc StreamVideo(StreamVideoRequest) returns (stream VideoChunk);
+  
+  // List videos with pagination
+  rpc ListVideos(ListVideosRequest) returns (ListVideosResponse);
+  
+  // Update video metadata
+  rpc UpdateVideo(UpdateVideoRequest) returns (UpdateVideoResponse);
+  
+  // Delete a video
+  rpc DeleteVideo(DeleteVideoRequest) returns (DeleteVideoResponse);
+}
+
+message UploadVideoRequest {
+  string title = 1;
+  string description = 2;
+  bytes chunk = 3;
+  bool is_last_chunk = 4;
+  string upload_id = 5;
+}
+
+message UploadVideoResponse {
+  string video_id = 1;
+  string upload_id = 2;
+  bool success = 3;
+}
+
+message GetVideoRequest {
+  string video_id = 1;
+}
+
+message StreamVideoRequest {
+  string video_id = 1;
+  int64 start_time = 2; // Start position in milliseconds
+  string quality = 3;   // e.g., "hd", "sd", "auto"
+}
+
+message VideoChunk {
+  bytes data = 1;
+  int64 timestamp = 2;
+  bool is_last_chunk = 3;
+}
+
+message ListVideosRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string sort_by = 3;    // Sort field
+  bool sort_desc = 4;    // Sort direction
+}
+
+message ListVideosResponse {
+  repeated VideoMetadata videos = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+message VideoMetadata {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  int64 duration = 4;    // Duration in seconds
+  string thumbnail_url = 5;
+  int64 views = 6;
+  string created_at = 7;
+  repeated string tags = 8;
+}
+
+message Video {
+  VideoMetadata metadata = 1;
+  string stream_url = 2;
+  repeated VideoFormat formats = 3;
+}
+
+message VideoFormat {
+  string quality = 1;   // e.g., "hd", "sd"
+  string url = 2;
+  int64 size = 3;       // Size in bytes
+  string mime_type = 4; // e.g., "video/mp4"
+}
+
+message UpdateVideoRequest {
+  string video_id = 1;
+  string title = 2;
+  string description = 3;
+  repeated string tags = 4;
+}
+
+message UpdateVideoResponse {
+  bool success = 1;
+  VideoMetadata metadata = 2;
+}
+
+message DeleteVideoRequest {
+  string video_id = 1;
+}
+
+message DeleteVideoResponse {
+  bool success = 1;
+}
+
+// Video Processing Service
+service VideoProcessingService {
+  // Process a video (generate thumbnails, transcode, etc.)
+  rpc ProcessVideo(ProcessVideoRequest) returns (ProcessVideoResponse);
+  
+  // Generate thumbnails for a video
+  rpc GenerateThumbnail(GenerateThumbnailRequest) returns (GenerateThumbnailResponse);
+  
+  // Transcode a video to different formats
+  rpc TranscodeVideo(TranscodeVideoRequest) returns (TranscodeVideoResponse);
+}
+
+message ProcessVideoRequest {
+  string video_id = 1;
+  string input_path = 2;
+  repeated string output_formats = 3;  // e.g., "hd", "sd"
+  bool generate_thumbnail = 4;
+}
+
+message ProcessVideoResponse {
+  bool success = 1;
+  string video_id = 2;
+  repeated VideoFormat formats = 3;
+  string thumbnail_url = 4;
+}
+
+message GenerateThumbnailRequest {
+  string video_id = 1;
+  string video_path = 2;
+  int64 timestamp = 3;  // Position in milliseconds for thumbnail
+}
+
+message GenerateThumbnailResponse {
+  bool success = 1;
+  string thumbnail_url = 2;
+}
+
+message TranscodeVideoRequest {
+  string video_id = 1;
+  string input_path = 2;
+  repeated string formats = 3;  // e.g., "hd", "sd"
+}
+
+message TranscodeVideoResponse {
+  bool success = 1;
+  repeated VideoFormat formats = 2;
+}
