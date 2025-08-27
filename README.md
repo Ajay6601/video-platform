@@ -19,7 +19,7 @@ A complete video streaming platform built with Go, gRPC, Redis, Kafka, and Docke
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/video-platform.git
+   git clone https://github.com/Ajay6601/video-platform.git
    cd video-platform
    ```
 
