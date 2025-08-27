@@ -131,6 +131,16 @@ View logs for a specific service:
 docker-compose logs -f api-gateway
 ```
 
+### Next Steps
+
+To extend this platform, you might consider:
+
+Authentication & Authorization: Add user management and access control
+Analytics: Track video views and user engagement
+CDN Integration: Distribute content across edge locations
+Search Capabilities: Add video search by metadata
+Playlists & Collections: Group videos for better organization
+
 ## License
 
 [MIT License](LICENSE)
