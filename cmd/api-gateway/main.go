@@ -13,12 +13,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/yourusername/video-platform/internal/service"
-	"github.com/yourusername/video-platform/pkg/api/video"
-	"github.com/yourusername/video-platform/pkg/config"
-	"github.com/yourusername/video-platform/pkg/kafka"
-	"github.com/yourusername/video-platform/pkg/redis"
-	"github.com/yourusername/video-platform/pkg/storage"
+	"github.com/Ajay6601/video-platform/internal/service"
+	"github.com/Ajay6601/video-platform/pkg/api/video"
+	"github.com/Ajay6601/video-platform/pkg/config"
+	"github.com/Ajay6601/video-platform/pkg/kafka"
+	"github.com/Ajay6601/video-platform/pkg/redis"
+	"github.com/Ajay6601/video-platform/pkg/storage"
 )
 
 func main() {
